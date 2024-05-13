@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-const crypto = require('crypto');
+
 
 //models import
 const Post = require('../models/post');
@@ -9,12 +8,14 @@ const Comment = require('../models/comment');
 const User = require('../models/user');
 
 //middleware imports
-const { checkLoggedIn } = require('../middlewares/loggedIn');
-const bcrypt = require('bcrypt');
 const { authenticateUser } = require('../middlewares/authUser')
-const jwt = require('jsonwebtoken');
 
 
+//controllers
+const userController = require('../controllers/userControllers');
+const postController = require('../controllers/postControllers');
+const commentController = require('../controllers/commentControllers');
+const authController = require('../controllers/authController');
 //Routes
 
 //GET - home
@@ -32,28 +33,6 @@ router.get('', async (req, res) => {
         console.log(error)
     }
 });
-
-//GET - post:id
-router.get('/post/:id', async (req, res) => {
-
-    try {
-        const posts = await Post.find();
-        let slug = req.params.id;
-        const data = await Post.findById({ _id: slug });
-        const comments = await Comment.find({ post: data._id }).populate('author');
-        const locals = {
-            title: data.title,
-            description: "Blog App with node.js, express and mongo"
-        }
-        res.render('post', { locals, posts, data, comments, loggedIn: true });
-
-    } catch (error) {
-        console.log(error)
-    }
-});
-
-
-
 
 //about page route
 router.get('/about', (req, res) => {
@@ -85,41 +64,11 @@ router.get('/login', (req, res) => {
 });
 
 // POST - Handle login form submission
-router.post('/login', async (req, res) => {
-    try {
-        // Extract username/email and password from the request body
-        const { usernameOrEmail, password } = req.body;
-
-        // Find the user by username or email in the database
-        const user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] });
-
-        // Check if the user exists
-        if (!user) {
-            // Render the login page with an error message
-            res.render('login', { message: 'Invalid username or email' });
-        }
-
-        // Compare the provided password with the hashed password in the database
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) {
-            // Render the login page with an error message
-            res.render('login', { message: 'Invalid password' });
-        }
-
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
-        res.cookie('token', token, { httpOnly: true });
-
-        // Redirect to the home page or any other page
-        res.redirect('/');
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-
-
+router.post(
+	'/login',
+	authController.notLoggedIn,
+	authController.login,
+);
 
 // GET - Signup page 
 router.get('/signup', (req, res) => {
@@ -131,155 +80,19 @@ router.get('/signup', (req, res) => {
 });
 
 // POST - Handle signup form submission
-router.post('/signup', async (req, res) => {
-    try {
-        // Extract user data from the request body
-        const { username, email, password } = req.body;
-
-        // Check if the user already exists in the database
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-
-        if (existingUser) {
-            // Render the signup page with an error message
-            res.render('signup', { message: 'Email or username already exists.' });
-        }
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create a new user instance
-        const newUser = new User({
-            username,
-            email,
-            password: hashedPassword
-        });
-
-        // Save the new user to the database
-        await newUser.save();
-
-        // Redirect to the login page with a success message
-        res.redirect('/login?signupSuccess=true');
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
+router.post('/signup', createUser); 
 
 //POST - category: tags
-router.get('/category/:tags', async (req, res) => {
-    try {
-        const slug = req.params.tags;
-        const currentPage = parseInt(req.query.page) || 1; // default page to 1 if not provided
-        const limit = 10; // set the limit of items per page
-        const startIndex = (currentPage - 1) * limit;
+router.get('/category/:tags', getPostByCategory);
 
-        const totalPosts = await Post.countDocuments({ tags: { $in: [slug] } });
-        const totalPages = Math.ceil(totalPosts / limit);
-
-        const data = await Post.find({ tags: { $in: [slug] } })
-            .limit(limit)
-            .skip(startIndex);
-
-        const posts = await Post.find();
-
-        const locals = {
-            title: "Category: " + slug,
-            description: "Blog App with node.js, express and mongo."
-        }
-
-        res.render('category', {
-            data,
-            posts,
-            locals,
-            currentPage,
-            totalPages
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-
+//GET - post:id
+router.get('/post/:id', getPost);
 
 //all posts page route
-router.get('/latest-posts', async (req, res) => {
-    const locals = {
-        title: "Latest Post",
-        description: "Latest post in the website."
-    }
-    let limit = 10;
-    let page = parseInt(req.query.page) || 1;
-
-    try {
-        const totalPosts = await Post.countDocuments();
-        const totalPages = Math.ceil(totalPosts / limit);
-        const posts = await Post.find()
-            .skip((page - 1) * limit)
-            .limit(limit)
-            .sort({ createdAt: -1 });
-
-        res.render('latest-posts', {
-            locals,
-            posts,
-            currentPage: page,
-            totalPages,
-        });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
+router.get('/latest-posts', getLatestPosts);
 
 //POST - post: searchInput
-router.post('/search', async (req, res) => {
-    try {
-        const locals = {
-            title: "Search",
-            description: "Blog App with node.js, express and mongo."
-        }
-
-        let searchTerm = req.body.searchTerm;
-        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
-
-        const page = parseInt(req.query.page) || 1; // default page to 1 if not provided
-        const limit = 10; // set the limit of items per page
-
-        const startIndex = (page - 1) * limit;
-
-        // Query the database once to get both data and totalItems
-        const [data, totalItems] = await Promise.all([
-            Post.find({
-                $or: [
-                    { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-                    { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-                    { tags: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
-                ]
-            }).limit(limit).skip(startIndex),
-            Post.countDocuments({
-                $or: [
-                    { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-                    { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-                    { tags: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
-                ]
-            })
-        ]);
-
-        const totalPages = Math.ceil(totalItems / limit);
-
-        const posts = await Post.find(); // Not sure if you need all posts for something else
-
-        res.render('search', {
-            data,
-            locals,
-            posts,
-            currentPage: page,
-            totalPages
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});
+router.post('/search', searchPost);
 
 // POST - post-comment
 router.post('/post-comment', authenticateUser, async (req, res) => {
@@ -375,23 +188,12 @@ router.post('/add-post', authenticateUser, async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
-    //destroy session
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-        req.user = null;
-        //clear cookies
-        res.clearCookie('token');
-        res.redirect('/login');
-    });
-});
-
-;
-
-//   
+// GET - Logout route
+router.get(
+	'/logout',
+	authController.isLoggedIn,
+	authController.logout,
+);
 
 
 module.exports = router;

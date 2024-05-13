@@ -1,66 +1,74 @@
 // Controllers for User
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // Function for user registration
-const createUser = async (req, res) => {
+exports.createUser = async (req, res) => {
   try {
-    // Request data
+    // Extract user data from the request body
     const { username, email, password } = req.body;
 
-    // Check if the user with the provided email already exists
-    const existingUser = await User.findOne({ email });
+    // Check if the user already exists in the database
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+
     if (existingUser) {
-      return res.status(400).json({ message: 'User with this email already exists' });
+        // Render the signup page with an error message
+        res.render('signup', { message: 'Email or username already exists.' });
     }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user instance
     const newUser = new User({
-      username,
-      email,
-      password
+        username,
+        email,
+        password: hashedPassword
     });
 
-    // Save the user to the database
+    // Save the new user to the database
     await newUser.save();
 
-    // Send message
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+    // Redirect to the login page with a success message
+    res.redirect('/login?signupSuccess=true');
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+}
 };
 
 // Function for user login
-const loginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
-    // Request data
-    const { email, password } = req.body;
+    // Extract username/email and password from the request body
+    const { usernameOrEmail, password } = req.body;
 
-    // Find the user by email
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Check if the password is valid
-    const isValidPassword = await user.isValidPassword(password);
-    if (!isValidPassword) {
-      return res.status(401).json({ message: 'Invalid password' });
-    }
-
-    // Create token for reponse
-    const token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+    // Find the user by username or email in the database
+    const user = await User.findOne({
+      $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     });
 
-    // Add token to the cookies
-    res.cookie("token", token, { httpOnly: true}, {maxAge: 60 * 60 * 1000 });
+    // Check if the user exists
+    if (!user) {
+      // Render the login page with an error message
+      res.render("login", { message: "Invalid username or email" });
+    }
 
+    // Compare the provided password with the hashed password in the database
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      // Render the login page with an error message
+      res.render("login", { message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    res.cookie("token", token, { httpOnly: true });
     // Send message
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({ message: "Login successful" });
+    // Redirect to the home page or any other page
+    res.redirect("/");
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
@@ -69,4 +77,3 @@ const loginUser = async (req, res) => {
 
 // Export module
 module.exports = { createUser, loginUser };
-
