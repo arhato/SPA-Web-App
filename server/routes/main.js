@@ -7,10 +7,6 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 
-//middleware imports
-const { authenticateUser } = require('../middlewares/authUser')
-
-
 //controllers
 const userController = require('../controllers/userControllers');
 const postController = require('../controllers/postControllers');
@@ -49,7 +45,7 @@ router.get('/contact', (req, res) => {
         title: "Contact Us",
         description: "Blog App with node.js, express and mongo."
     }
-    res.render('contact', locals);
+    res.json({message:"Contact Us"});
 });
 
 // GET - Render login page
@@ -64,11 +60,7 @@ router.get('/login', (req, res) => {
 });
 
 // POST - Handle login form submission
-router.post(
-	'/login',
-	authController.notLoggedIn,
-	authController.login,
-);
+router.post('/login', authController.notLoggedIn, userController.loginUser);
 
 // GET - Signup page 
 router.get('/signup', (req, res) => {
@@ -80,121 +72,58 @@ router.get('/signup', (req, res) => {
 });
 
 // POST - Handle signup form submission
-router.post('/signup', createUser); 
+router.post('/signup', authController.notLoggedIn,userController.createUser); 
 
 //POST - category: tags
-router.get('/category/:tags', getPostByCategory);
+router.get('/category/:tags', postController.getPostByCategory);
 
 //GET - post:id
-router.get('/post/:id', getPost);
+router.get('/post/:id', postController.getPost);
+
+// Route to edit a post
+router.put('/post/:id/edit', postController.verifyPost, postController.editPost);
+
+// Route to delete a post
+router.delete('/post/:id', postController.verifyPost, postController.deletePost);
 
 //all posts page route
-router.get('/latest-posts', getLatestPosts);
+router.get('/latest-posts', postController.getLatestPosts);
 
 //POST - post: searchInput
-router.post('/search', searchPost);
+router.post('/search', postController.searchPost);
 
 // POST - post-comment
-router.post('/post-comment', authenticateUser, async (req, res) => {
-    try {
-        // Extract comment data from the request body
-        const { postId, userId, message } = req.body;
+router.post('/post-comment', authController.isLoggedIn, commentController.postComment);
 
-        // Find the post based on postId
-        const post = await Post.findById(postId);
+// Route to get all comments for a specific post
+router.get('/comments/:postId', commentController.getCommentsByPost);
 
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
+// Route to edit a comment
+router.put('/comment/:commentId', commentController.verifyComment, commentController.editComment);
 
-        // Find the user based on userId
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Create a new comment
-        const comment = new Comment({
-            content: message,
-            author: user // Assign the user object directly to the comment's author field
-        });
-
-        // Save the comment
-        await comment.save();
-
-        // Associate the comment with the post
-        post.comments.push(comment);
-        await post.save();
-
-        res.status(201).json({ message: 'Comment posted successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
+//Route to delete a comment
+router.delete('/comment/:commentId', commentController.verifyComment, commentController.deleteComment);
 
 //GET - add post
-router.get('/add-post', authenticateUser, async (req, res) => {
+router.get('/add-post', authController.isLoggedIn, async (req, res) => {
     const locals = {
         title: "Add Post",
         description: "Blog App with node.js, express and mongo",
     }
-    try {
-        res.render('add-post', { locals, message: "" });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Unauthorized' });
-    }
+    res.render('add-post', { locals, message: "" });
 });
 
 // POST route to handle adding a new post
-router.post('/add-post', authenticateUser, async (req, res) => {
-    try {
-        const userId = req.userId;
-        // Extract data from the request body
-        const { title, body, description, tags } = req.body;
-        console.log(req.body);
+router.post('/add-post', authController.isLoggedIn, postController.addPost);
 
-        // Check if both title and body fields are provided
-        if (!title || !body) {
-            return res.status(400).json({ message: "Title and body are required" });
-        }
-        // Initialize tags as an empty array
-        let tagsArray = [];
-        // Check if tags exist and if it's a string before splitting
-        if (tags && typeof tags === 'string') {
-            tagsArray = tags.split(',');
-        }
-        // Create a new post instance
-        const newPost = new Post({
-            title: title,
-            body: body,
-            author: userId,
-            description: description,
-            tags: tagsArray,
-            comments: [] // Initialize with empty array
-        });
+// POST route to handle editing a post
+router.post('/edit-post/:id', authController.isLoggedIn, postController.editPost);
 
-        // Save the new post to the database
-        await newPost.save();
+// delete - Logout route
+router.delete('/logout',authController.isLoggedIn,	authController.logout);
 
-        // Redirect with message
-        res.render('add-post', { message: "Post added successfully" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-// GET - Logout route
-router.get(
-	'/logout',
-	authController.isLoggedIn,
-	authController.logout,
-);
-
+// GET - profile route
+router.get('/profile', authController.isLoggedIn, userController.getUserPosts, userController.getUserComments);
 
 module.exports = router;
 

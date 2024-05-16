@@ -1,5 +1,9 @@
 // Controllers for User
 const User = require("../models/user");
+const Post = require("../models/post");
+const Comment = require("../models/comment");
+
+const bcrypt=require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -14,7 +18,7 @@ exports.createUser = async (req, res) => {
 
     if (existingUser) {
         // Render the signup page with an error message
-        res.render('signup', { message: 'Email or username already exists.' });
+        res.redirect('signup', { message: 'Email or username already exists.' });
     }
 
     // Hash the password
@@ -31,10 +35,9 @@ exports.createUser = async (req, res) => {
     await newUser.save();
 
     // Redirect to the login page with a success message
-    res.redirect('/login?signupSuccess=true');
+    res.status(200).json({ message: "User creation successful" });
 } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ error: error.message });
 }
 };
 
@@ -52,7 +55,7 @@ exports.loginUser = async (req, res) => {
     // Check if the user exists
     if (!user) {
       // Render the login page with an error message
-      res.render("login", { message: "Invalid username or email" });
+      res.status(400).json({ message: "Invalid username or email" });
     }
 
     // Compare the provided password with the hashed password in the database
@@ -60,7 +63,7 @@ exports.loginUser = async (req, res) => {
 
     if (!passwordMatch) {
       // Render the login page with an error message
-      res.render("login", { message: "Invalid password" });
+      res.status(400).json({ message: "Invalid password" });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
@@ -71,9 +74,26 @@ exports.loginUser = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Export module
-module.exports = { createUser, loginUser };
+//Function to get all user posts
+exports.getUserPosts = async (req, res) => {
+  const posts = await Post.find({ author: req.user._id });
+  res.render('profile', {
+    title: 'User Posts',
+    posts,
+  });
+};
+
+//Function to get all user comments
+exports.getUserComments = async (req, res) => {
+  const comments = await Comment.find({ author: req.user._id });
+  res.render('profile', {
+    title: 'User Comments',
+    comments,
+  });
+};
+
+

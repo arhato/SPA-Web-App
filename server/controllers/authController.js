@@ -9,17 +9,33 @@ exports.getLoginPage = (req, res) => {
 /*
 Login Controller
 */
-exports.login = passport.authenticate('local', {
-  failureRedirect: '/login',
-  failureFlash: 'Email/Password Invalid!',
-  successRedirect: '/',
-});
+exports.login = function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { 
+      return next(err); // Passes the error to the error-handling middleware
+    }
+    if (!user) { 
+      req.flash('error', 'Email/Password Invalid!');
+      return res.redirect('/login'); // Return to prevent further execution
+    }
+    req.logIn(user, function(err) {
+      if (err) { 
+        return next(err); // Passes the error to the error-handling middleware
+      }
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+      res.cookie("token", token, { httpOnly: true });
+      return res.status(200).json({ message: "Login successful" }); // Return to prevent further execution
+    });
+  })(req, res, next);
+};
+
 
 /*
 Logout Controller
 */
 exports.logout = (req, res) => {
   req.logout();
+  res.status(200).json({ message: "Logout successful" });
   res.redirect('/login');
 };
 
