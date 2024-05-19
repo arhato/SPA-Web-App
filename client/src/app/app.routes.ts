@@ -27,9 +27,3 @@ export const routes: Routes = [
     {  path: 'post/:id', component: SinglePostComponent },
     {  path: '**', redirectTo: '/' }
 ];
-
-@NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
-})
-export class AppRoutingModule { }

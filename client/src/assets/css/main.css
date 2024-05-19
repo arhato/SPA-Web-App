@@ -132,6 +132,7 @@ h6 {
   transition: 0.3s;
   color: #fff;
   background: var(--color-primary);
+  
 }
 
 .page-header .cta-btn:hover {
@@ -1140,6 +1141,12 @@ h6 {
   color: #fff;
 }
 
+.contact .php-email-form input::placeholder,
+.contact .php-email-form textarea::placeholder {
+  color: #fff; 
+  opacity: 0.75; 
+}
+
 .contact .php-email-form input {
   height: 44px;
 }
@@ -1158,6 +1165,422 @@ h6 {
 }
 
 .contact .php-email-form button[type=submit]:hover {
+  background: rgba(39, 167, 118, 0.8);
+}
+
+@keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*--------------------------------------------------------------
+# Login Section
+--------------------------------------------------------------*/
+.login .info-item+.info-item {
+  margin-top: 40px;
+}
+
+.login .info-item i {
+  font-size: 20px;
+  color: var(--color-primary);
+  float: left;
+  width: 44px;
+  height: 44px;
+  background: #222425;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  margin-right: 15px;
+}
+
+.login .info-item h4 {
+  padding: 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login .info-item p {
+  padding: 0;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+.login .info-item:hover i {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.login .php-login-form {
+  width: 100%;
+}
+
+.login .php-login-form .form-group {
+  padding-bottom: 8px;
+}
+
+.login .php-login-form .error-message {
+  display: none;
+  color: #fff;
+  background: #df1529;
+  text-align: left;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.login .php-login-form .error-message br+br {
+  margin-top: 25px;
+}
+
+.login .php-login-form .sent-message {
+  display: none;
+  color: #fff;
+  background: var(--color-primary);
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.login .php-login-form .loading {
+  display: none;
+  background: var(--color-secondary);
+  text-align: center;
+  padding: 15px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.login .php-login-form .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid var(--color-primary);
+  border-top-color: var(--color-secondary);
+  animation: animate-loading 1s linear infinite;
+}
+
+.login .php-login-form input,
+.login .php-login-form textarea {
+  border-radius: 4px;
+  box-shadow: none;
+  font-size: 14px;
+  background-color: var(--color-secondary);
+  border: 1px solid #2e3133;
+  color: #fff;
+}
+
+.login .php-login-form input::placeholder,
+.login .php-login-form textarea::placeholder {
+  color: #fff; 
+  opacity: 0.75; 
+}
+
+.login .php-login-form input {
+  height: 44px;
+}
+
+.login .php-login-form textarea {
+  padding: 10px 12px;
+}
+
+.login .php-login-form button[type=submit] {
+  background: var(--color-primary);
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+.login .php-login-form button[type=submit]:hover {
+  background: rgba(39, 167, 118, 0.8);
+}
+
+@keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+# Signup Section
+--------------------------------------------------------------*/
+.signup .info-item+.info-item {
+  margin-top: 40px;
+}
+
+.signup .info-item i {
+  font-size: 20px;
+  color: var(--color-primary);
+  float: left;
+  width: 44px;
+  height: 44px;
+  background: #222425;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  margin-right: 15px;
+}
+
+.signup .info-item h4 {
+  padding: 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.signup .info-item p {
+  padding: 0;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+.signup .info-item:hover i {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.signup .php-signup-form {
+  width: 100%;
+}
+
+.signup .php-signup-form .form-group {
+  padding-bottom: 8px;
+}
+
+.signup .php-signup-form .error-message {
+  display: none;
+  color: #fff;
+  background: #df1529;
+  text-align: left;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.signup .php-signup-form .error-message br+br {
+  margin-top: 25px;
+}
+
+.signup .php-signup-form .sent-message {
+  display: none;
+  color: #fff;
+  background: var(--color-primary);
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.signup .php-signup-form .loading {
+  display: none;
+  background: var(--color-secondary);
+  text-align: center;
+  padding: 15px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.signup .php-signup-form .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid var(--color-primary);
+  border-top-color: var(--color-secondary);
+  animation: animate-loading 1s linear infinite;
+}
+
+.signup .php-signup-form input,
+.signup .php-signup-form textarea {
+  border-radius: 4px;
+  box-shadow: none;
+  font-size: 14px;
+  background-color: var(--color-secondary);
+  border: 1px solid #2e3133;
+  color: #fff;
+}
+
+.signup .php-signup-form input::placeholder,
+.signup .php-signup-form textarea::placeholder {
+  color: #fff; 
+  opacity: 0.75; 
+}
+
+.signup .php-signup-form input {
+  height: 44px;
+}
+
+.signup .php-signup-form textarea {
+  padding: 10px 12px;
+}
+
+.signup .php-signup-form button[type=submit] {
+  background: var(--color-primary);
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+.signup .php-signup-form button[type=submit]:hover {
+  background: rgba(39, 167, 118, 0.8);
+}
+
+@keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+# Search Section
+--------------------------------------------------------------*/
+.search .info-item+.info-item {
+  margin-top: 40px;
+}
+
+.search .info-item i {
+  font-size: 20px;
+  color: var(--color-primary);
+  float: left;
+  width: 44px;
+  height: 44px;
+  background: #222425;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  margin-right: 15px;
+}
+
+.search .info-item h4 {
+  padding: 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search .info-item p {
+  padding: 0;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+.search .info-item:hover i {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.search .php-search-form {
+  width: 100%;
+}
+
+.search .php-search-form .form-group {
+  padding-bottom: 8px;
+}
+
+.search .php-search-form .error-message {
+  display: none;
+  color: #fff;
+  background: #df1529;
+  text-align: left;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.search .php-search-form .error-message br+br {
+  margin-top: 25px;
+}
+
+.search .php-search-form .sent-message {
+  display: none;
+  color: #fff;
+  background: var(--color-primary);
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.search .php-search-form .loading {
+  display: none;
+  background: var(--color-secondary);
+  text-align: center;
+  padding: 15px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search .php-search-form .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid var(--color-primary);
+  border-top-color: var(--color-secondary);
+  animation: animate-loading 1s linear infinite;
+}
+
+.search .php-search-form input,
+.search .php-search-form textarea {
+  border-radius: 4px;
+  box-shadow: none;
+  font-size: 14px;
+  background-color: var(--color-secondary);
+  border: 1px solid #2e3133;
+  color: #fff;
+}
+
+.search .php-search-form input::placeholder,
+.search .php-search-form textarea::placeholder {
+  color: #fff;
+  opacity: 0.75;
+}
+
+.search .php-search-form input {
+  height: 44px;
+}
+
+.search .php-search-form textarea {
+  padding: 10px 12px;
+}
+
+.search .php-search-form button[type=submit] {
+  background: var(--color-primary);
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+.search .php-search-form button[type=submit]:hover {
   background: rgba(39, 167, 118, 0.8);
 }
 

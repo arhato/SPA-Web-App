@@ -2,6 +2,7 @@
 const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const Message = require("../models/message");
 
 const bcrypt=require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -96,4 +97,25 @@ exports.getUserComments = async (req, res) => {
   });
 };
 
+exports.userContact = async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { name, email, subject, message } = req.body;
 
+    // Create a new message instance
+    const newMessage = new Message({
+      name,
+      email,
+      subject,
+      message
+    });
+
+    // Save the message to the database
+    await newMessage.save();
+
+    // Respond with a success message
+    res.status(200).json({ message: "Your message has been sent. Thank you!" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

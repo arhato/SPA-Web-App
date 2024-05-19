@@ -1,1 +1,45 @@
-<p>login works!</p>
+<main id="main" data-aos="fade" data-aos-delay="1500">
+
+    <!-- ======= Page Header ======= -->
+    <div class="page-header d-flex align-items-center">
+      <div class="container position-relative">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-6 text-center">
+            <h2>Login</h2>
+            <p>Enter your credentials to access your account on DIY Forum.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Page Header -->
+  
+    <!-- ======= Login Section ======= -->
+    <section id="login" class="login">
+      <div class="container">
+  
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <form action="/login" method="post" role="form" class="php-login-form">
+              <div class="form-group">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username or Email" style="color: white !important;" required>
+              </div>
+              <div class="form-group mt-3">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" style="color: white !important;" required>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your login attempt was successful. Redirecting...</div>
+              </div>
+              <div class="text-center"><button type="submit">Login</button></div>
+            </form>
+          </div>
+        </div>
+  
+      </div>
+    </section>
+    <!-- End Login Section -->
+  
+  </main>
+  <!-- End #main -->
+  

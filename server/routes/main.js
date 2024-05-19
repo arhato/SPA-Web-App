@@ -125,6 +125,8 @@ router.delete('/logout',authController.isLoggedIn,	authController.logout);
 // GET - profile route
 router.get('/profile', authController.isLoggedIn, userController.getUserPosts, userController.getUserComments);
 
+router.post('/contact', userController.userContact);
+
 module.exports = router;
 
 

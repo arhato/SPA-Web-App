@@ -1,1 +1,51 @@
-<p>signup works!</p>
+<main id="main" data-aos="fade" data-aos-delay="1500">
+
+    <!-- ======= Page Header ======= -->
+    <div class="page-header d-flex align-items-center">
+      <div class="container position-relative">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-6 text-center">
+            <h2>Signup</h2>
+            <p>Create a new account on DIY Forum by filling out the form below.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Page Header -->
+  
+    <!-- ======= Signup Section ======= -->
+    <section id="signup" class="signup">
+      <div class="container">
+  
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <form action="/signup" method="post" role="form" class="php-signup-form">
+              <div class="form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Full Name" style="color: white !important;" required>
+              </div>
+              <div class="form-group mt-3">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email" style="color: white !important;" required>
+              </div>
+              <div class="form-group mt-3">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" style="color: white !important;" required>
+              </div>
+              <div class="form-group mt-3">
+                <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="Confirm Password" style="color: white !important;" required>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your signup was successful. Redirecting...</div>
+              </div>
+              <div class="text-center"><button type="submit">Signup</button></div>
+            </form>
+          </div>
+        </div>
+  
+      </div>
+    </section>
+    <!-- End Signup Section -->
+  
+  </main>
+  <!-- End #main -->
+  
