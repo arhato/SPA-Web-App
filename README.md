@@ -5,6 +5,6 @@ Then run 'npm start' root directory.
 
 
 If the project give an error such as a 'permission denied' for one of the dependencies or an I/O error:
-Delete the package-lock.json file and the node_modules folder on all directories and run 'npm build' and 'npm install'.
+Delete the package-lock.json file and the node_modules folder on all directories and run 'npm rebuild' and 'npm install'.
 
 This project is incomplete.
