@@ -16,7 +16,7 @@
     </div><!-- End Page Header -->
     <!-- ======= Search Section ======= -->
     <section id="search" class="search form-section">
-        <div id="search" class="search form-section" >
+        <div id="search" class="search form-section">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <form action="/search" method="post" role="form" class="php-search-form php-form d-flex">
@@ -40,26 +40,27 @@
     </section>
 
     <!-- Content Section -->
-    <section>
+    <section class="content-section">
         <div class="container">
             <div class="row">
                 <!-- Main content -->
                 <div class="col-lg-9 mb-3">
                     <div class="row text-left mb-5">
                         <div class="col-lg-6 mb-3 mb-sm-0">
-                            <div class="dropdown bootstrap-select form-control form-control-lg bg-white bg-op-9 text-sm w-lg-50"
+                            <div class="dropdown bootstrap-select form-control form-control-lg bg-black bg-op-9 text-sm w-lg-50"
                                 style="width: 100%;">
                                 <select class="form-control form-control-lg bg-white bg-op-9 text-sm w-lg-50"
                                     data-toggle="select" tabindex="-98">
                                     <option> Categories </option>
-                                    <option> Learn </option>
-                                    <option> Share </option>
-                                    <option> Build </option>
+                                    <option> Crafts </option>
+                                    <option> Home Improvement </option>
+                                    <option> Gardening </option>
+                                    <option> Miscellaneous or General </option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-6 text-lg-right">
-                            <div class="dropdown bootstrap-select form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50"
+                            <div class="dropdown bootstrap-select form-control form-control-lg bg-black bg-op-9 ml-auto text-sm w-lg-50"
                                 style="width: 100%;">
                                 <select class="form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50"
                                     data-toggle="select" tabindex="-98">
@@ -71,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End of post 1 -->
+                    <!-- Post 1 -->
                     <div
                         class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                         <div class="row align-items-center">
@@ -98,8 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /End of post 1 -->
-                    <!-- End of post 2 -->
+                    <!-- Post 2 -->
                     <div
                         class="card row-hover pos-relative py-3 px-3 mb-3 border-primary border-top-0 border-right-0 border-bottom-0 rounded-0">
                         <div class="row align-items-center">
@@ -125,8 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /End of post 2 -->
-                    <!-- End of post 3 -->
+                    <!-- Post 3 -->
                     <div
                         class="card row-hover pos-relative py-3 px-3 mb-3 border-primary border-top-0 border-right-0 border-bottom-0 rounded-0">
                         <div class="row align-items-center">
@@ -153,8 +152,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /End of post 3 -->
-                    <!-- End of post 4 -->
+                    <!-- Post 4 -->
                     <div
                         class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                         <div class="row align-items-center">
@@ -182,8 +180,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /End of post 4 -->
-                    <!-- End of post 5 -->
+                    <!-- Post 5 -->
                     <div
                         class="card row-hover pos-relative py-3 px-3 mb-3 border-primary border-top-0 border-right-0 border-bottom-0 rounded-0">
                         <div class="row align-items-center">
@@ -209,83 +206,59 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /End of post 5 -->
+                    <!-- /End of posts -->
                 </div>
-                <!-- Sidebar content -->
-                <div class="col-lg-3 mb-4 mb-lg-0 px-lg-0 mt-lg-0">
-                    <div
-                        style="visibility: hidden; display: none; width: 285px; height: 801px; margin: 0px; float: none; position: static; inset: 85px auto auto;">
+
+
+
+                <div class="col-md-3">
+                    <!-- ======= Sidebar ======= -->
+                    <div class="aside-block">
+
+                        <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-popular" type="button" role="tab"
+                                    aria-controls="pills-popular" aria-selected="true">Popular</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-trending" type="button" role="tab"
+                                    aria-controls="pills-trending" aria-selected="false">Trending</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-latest-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-latest" type="button" role="tab" aria-controls="pills-latest"
+                                    aria-selected="false">Latest</button>
+                            </li>
+                        </ul>
+
+
                     </div>
-                    <div data-settings="{&quot;parent&quot;:&quot;#content&quot;,&quot;mind&quot;:&quot;#header&quot;,&quot;top&quot;:10,&quot;breakpoint&quot;:992}"
-                        data-toggle="sticky" class="sticky" style="top: 85px;">
-                        <div class="sticky-inner">
-                            <a class="btn btn-lg btn-block btn-success rounded-0 py-4 mb-3 bg-op-6 roboto-bold"
-                                href="#">Ask Question</a>
-                            <div class="bg-white mb-3">
-                                <h4 class="px-3 py-4 op-5 m-0">
-                                    Active Topics
-                                </h4>
-                                <hr class="m-0">
-                                <div class="pos-relative px-3 py-3">
-                                    <h6 class="text-primary text-sm">
-                                        <a href="#" class="text-primary">Why Bootstrap 4 is so awesome? </a>
-                                    </h6>
-                                    <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black"
-                                            href="#">39 minutes</a> <span class="op-6">ago by</span> <a
-                                            class="text-black" href="#">AppStrapMaster</a></p>
-                                </div>
-                                <hr class="m-0">
-                                <div class="pos-relative px-3 py-3">
-                                    <h6 class="text-primary text-sm">
-                                        <a href="#" class="text-primary">Custom shortcut or command to launch command in
-                                            terminal? </a>
-                                    </h6>
-                                    <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black"
-                                            href="#">58 minutes</a> <span class="op-6">ago by</span> <a
-                                            class="text-black" href="#">DanielD</a></p>
-                                </div>
-                                <hr class="m-0">
-                                <div class="pos-relative px-3 py-3">
-                                    <h6 class="text-primary text-sm">
-                                        <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
-                                    </h6>
-                                    <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black"
-                                            href="#">48 minutes</a> <span class="op-6">ago by</span> <a
-                                            class="text-black" href="#">DanielD</a></p>
-                                </div>
-                                <hr class="m-0">
-                                <div class="pos-relative px-3 py-3">
-                                    <h6 class="text-primary text-sm">
-                                        <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
-                                    </h6>
-                                    <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black"
-                                            href="#">38 minutes</a> <span class="op-6">ago by</span> <a
-                                            class="text-black" href="#">DanielD</a></p>
-                                </div>
-                                <hr class="m-0">
-                            </div>
-                            <div class="bg-white text-sm">
-                                <h4 class="px-3 py-4 op-5 m-0 roboto-bold">
-                                    Stats
-                                </h4>
-                                <hr class="my-0">
-                                <div class="row text-center d-flex flex-row op-7 mx-0">
-                                    <div class="col-sm-6 flex-ew text-center py-3 border-bottom border-right"> <a
-                                            class="d-block lead font-weight-bold" href="#">58</a> Topics </div>
-                                    <div class="col-sm-6 col flex-ew text-center py-3 border-bottom mx-0"> <a
-                                            class="d-block lead font-weight-bold" href="#">1.856</a> Posts </div>
-                                </div>
-                                <div class="row d-flex flex-row op-7">
-                                    <div class="col-sm-6 flex-ew text-center py-3 border-right mx-0"> <a
-                                            class="d-block lead font-weight-bold" href="#">300</a> Members </div>
-                                    <div class="col-sm-6 flex-ew text-center py-3 mx-0"> <a
-                                            class="d-block lead font-weight-bold" href="#">DanielD</a> Newest Member
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
+
+                    <div class="aside-block">
+                        <h3 class="aside-title">Categories</h3>
+                        <ul class="aside-links list-unstyled">
+                            <li><a href="/category/business"><i class="bi bi-chevron-right"></i> Business</a></li>
+                            <li><a href="/category/culture"><i class="bi bi-chevron-right"></i> Culture</a></li>
+                            <li><a href="/category/sport"><i class="bi bi-chevron-right"></i> Sport</a></li>
+                            <li><a href="/category/food"><i class="bi bi-chevron-right"></i> Food</a></li>
+                            <li><a href="/category/politics"><i class="bi bi-chevron-right"></i> Politics</a></li>
+                            <li><a href="/category/celebrity"><i class="bi bi-chevron-right"></i> Celebrity</a></li>
+                            <li><a href="/category/travel"><i class="bi bi-chevron-right"></i> Travel</a></li>
+                        </ul>
+                    </div><!-- End Categories -->
+
+
+
                 </div>
+
+
+
+
+
             </div>
         </div>
     </section>
